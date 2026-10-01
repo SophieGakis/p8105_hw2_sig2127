@@ -12,7 +12,7 @@ Loading the tidyverse to start
 library(tidyverse)
 ```
 
-Importing the NYC Transit dataset, reading, and cleaning the data.  
+## Importing the NYC Transit dataset, reading, and cleaning the data.  
 
 ```{r}
 transit_df = 
@@ -34,9 +34,41 @@ ncol(transit_df)
 view(transit_df)
 ```
 
+## Writing a paragraph to describe the data 
+
 The transit_df dataset now contains 19 variables (or columns). It contains subway lines, station names, latitude/longitude values for each station, what routes are served by each station, what entrace type is in the station, if there is vending and entry at the station, and if the station is ADA compliant. 
 
 So far, after importing this dataset, I cleaned it up by keeping only the variables of interest, and making the entry variable logical (having true/false values), as opposed to character (having yes/no values). 
 
 The current dimensions of the data set are 1868 rows x 19 columns, and I do not believe that these data are tidy. 
+
+## Answering some questions about the data 
+
+```{r}
+transit_df |> distinct(line, station_name) 
+```
+
+Using the distinct function, I can tell that there are 465 distinct stations. This code removed any duplicate rows so it shows only the number of distinct stations that are identified by name and line in the dataset. 
+
+```{r}
+transit_df |>
+  filter(ada == TRUE) |>
+  distinct(line, station_name, ada)
+```
+
+By filtering out the distinct data on how many stations there are for only the ones where ADA compliance is "TRUE" I can tell there are 84 stations that are ADA complaint. 
+
+What proportion of station entrances / exits without vending allow entrance?
+
+```{r}
+transit_df |>
+  mutate(
+    vending = case_match(
+      vending, 
+      "YES" ~ TRUE, 
+      "NO" ~ FALSE 
+    )
+  ) |>
+  filter(vending == FALSE, entry == TRUE) 
+```
 
