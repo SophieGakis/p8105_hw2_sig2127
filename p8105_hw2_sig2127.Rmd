@@ -58,7 +58,19 @@ transit_df |>
 
 By filtering out the distinct data on how many stations there are for only the ones where ADA compliance is "TRUE" I can tell there are 84 stations that are ADA complaint. 
 
-What proportion of station entrances / exits without vending allow entrance?
+```{r}
+transit_df |>
+  mutate(
+    vending = case_match(
+      vending, 
+      "YES" ~ TRUE, 
+      "NO" ~ FALSE 
+    )
+  ) |>
+  filter(vending == FALSE) 
+```
+
+First filtering out how many stations do not have vending
 
 ```{r}
 transit_df |>
@@ -71,4 +83,48 @@ transit_df |>
   ) |>
   filter(vending == FALSE, entry == TRUE) 
 ```
+
+Second filtering out how many stations do not have vending and allow entrance
+
+By first filtering out how many entrances / exits do not have vending (183), and then filtering out how many entrances / exits do not have vending and allow entry (69), I can find the proportion of station entrances / exits without vending that allow entrance. This would be 69 / 183, which I can compute in the console, to get 0.3770492 or 37.71% of station entrances / exits without vending allow entrance. 
+
+## Reformatting the data 
+
+Reformatting the data so that route number and route name are distinct variables 
+
+```{r}
+transit_tidy_df = 
+  transit_df |>
+  mutate(
+    across(starts_with("route"), as.character)
+  ) |>
+  pivot_longer(
+    route1:route11,
+    names_to = "route_number",
+    names_prefix = "route",
+    values_to = "route_name",
+  ) |>
+  drop_na(route_name) 
+
+view(transit_tidy_df)
+```
+
+## Answering more questions
+
+```{r}
+transit_tidy_df |>
+  filter(route_name == "A")|>
+  distinct(line, station_name)
+```
+
+By removing any duplicate rows so it shows only the number of distinct stations that are identified by name and line in the dataset, and filtering for the stations that serve only the A train, I can see there are 60  distinct stations serve the A train. 
+
+```{r}
+transit_tidy_df |>
+  filter(route_name == "A", ada == TRUE) |>
+  distinct(line, station_name, ada)
+```
+
+By removing any duplicate rows so it shows only the number of distinct stations that are identified by name and line in the dataset, and filtering for the stations that serve only the A train, and then from those filtering for the ones where ada compliance is true, I can see that of the stations that serve the A train, 17 are ADA compliant. 
+
 
