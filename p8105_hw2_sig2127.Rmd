@@ -1,0 +1,111 @@
+---
+title: "P8105 HW2 - Sophie Gakis (sig2127)"
+output: github_document
+date: "2026-10-01"
+---
+# Problem 1 
+
+After installing the package that contains the penguins dataset (done once in the console), this will load it. Also loading the tidyverse library at the top of the document here. 
+
+```{r}
+library (tidyverse)
+data("penguins", package = "palmerpenguins")
+
+penguins
+```
+
+## The penguins dataset description 
+
+*   Data in the dataset (Variables and values)
+    * Species (Adelie, Chinstrap, or Gentoo)
+    * Island (Biscoe, Dream, or Torgersen)
+    * Bill length in mm (Range from 32.1 to 59.6 mm)
+    * Bill Dept in mm (Range from 13.1 to 21.5 mm)
+    * Flipper length in mm (Range from 172 to 231)
+    * Body mass in g (Range from 2,700, 6,300)
+    * Sex (Male or Female)
+    * Year (2007 to 2009)
+    
+*   Size of the dataset
+```{r}
+nrow(penguins)
+ncol(penguins)
+```
+
+Using `drop_na` command to drop any NA values for the flipper length variable so that the Mean can be taken. 
+
+```{r}
+penguins = drop_na(penguins, flipper_length_mm)
+
+penguins
+```
+
+*   The mean flipper length: `r round(mean(pull(penguins, flipper_length_mm)), 2)`
+
+## Making a scatter plot 
+
+```{r}
+scatterplot_1 = ggplot(penguins, aes(x=bill_length_mm, y=flipper_length_mm, color=species)) + geom_point() 
+
+scatterplot_1
+```
+
+## Saving the scatterplot 
+
+```{r}
+ggsave("scatterplot_1.png", plot = scatterplot_1)
+```
+
+# Problem 2 
+
+## Creating the specified data frame 
+
+```{r}
+problem_2_df = 
+  tibble(
+  rand_sampl = rnorm(10),
+  log_vec = rand_sampl > 0,
+  char_vec = letters[1:10],
+  fact_vec = factor(sample(c("Level 1", "Level 2", "Level 3"), 10, replace = TRUE))
+  )
+
+problem_2_df
+```
+
+## Trying to take the mean of each variable in the dataframe 
+
+* Mean of random sample: `r round(mean(pull(problem_2_df, rand_sampl)), 2)`
+
+* Mean of logical vector: `r round(mean(pull(problem_2_df, log_vec)), 2)`
+
+* Mean of character vector: `r round(mean(pull(problem_2_df, char_vec)), 2)`
+
+* Mean of factor vector: `r round(mean(pull(problem_2_df, fact_vec)), 2)`
+
+Using the code above to take the mean of each variable in my problem_2_df, it seems like the 
+mean for the random sample and the logical vector did work, while the mean for the character vector and the factor vector did not work. I think that is because these two variables are currently formatted as character variables and not numeric variables, so their means cannot be taken. 
+
+## Converting variables from one type to another 
+
+Adding in a code chunk that applies the as.numeric function to the logical, character, and factor variables
+
+```{r, eval = FALSE}
+problem_2_df_num = 
+  mutate(problem_2_df,
+  log_vec_num = as.numeric(log_vec),
+  char_vec_num = as.numeric(char_vec),
+  fact_vec_num = as.numeric(fact_vec)
+)
+
+problem_2_df_num
+```
+
+By doing this, the logical vector and factor vector are able to be transformed into numerical values. This is because the logical vector originally had values of "true" and "false" which seem to be translated into 1 and 0 respectively. The factor vector had the three levels which then transform into 1, 2, and 3 numerically. The character vector is not able to be transformed since it is originally just letters a-j, which do not translate as easily into numerical values. This results in them coming up as NA after the transformation. 
+
+This does help explain what happens when you try to take the mean, as it shows that a mean can only be taken for a numeric variable, not a character variable. This means that the mean could now be taken for the new numeric factor variable, but still not for the new numeric character variable. 
+
+I also Included eval = FALSE at the top of this chunk to ensure the chunk shows but not the output. 
+
+
+
+
