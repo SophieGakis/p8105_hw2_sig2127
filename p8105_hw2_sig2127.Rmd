@@ -28,8 +28,15 @@ transit_df =
     )
   )
 
+nrow(transit_df)
+ncol(transit_df)
+
 view(transit_df)
 ```
 
-Write a short paragraph about this dataset – explain briefly what variables the dataset contains, describe your data cleaning steps so far, and give the dimension (rows x columns) of the resulting dataset. Are these data tidy?
+The transit_df dataset now contains 19 variables (or columns). It contains subway lines, station names, latitude/longitude values for each station, what routes are served by each station, what entrace type is in the station, if there is vending and entry at the station, and if the station is ADA compliant. 
+
+So far, after importing this dataset, I cleaned it up by keeping only the variables of interest, and making the entry variable logical (having true/false values), as opposed to character (having yes/no values). 
+
+The current dimensions of the data set are 1868 rows x 19 columns, and I do not believe that these data are tidy. 
 
