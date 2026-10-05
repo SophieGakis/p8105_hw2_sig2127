@@ -187,12 +187,33 @@ trash_combined_df =
 ```
 
 
-## Writing a paragraph and answering a question about this data 
+## Writing a paragraph about this data 
 
 After combining these three datasets, the `trash_combined_df` dataset contains `r nrow(trash_combined_df)` observations and `r ncol(trash_combined_df)` variables. Some important variables within `trash_combined_df` are `dumpster` which gives an ID number for the dumpster being investigated, `month`, `year`, and `date` to identify when the measurements were made, `weight_tons` to describe the weight of the trash from the dumpster measured in tons, and things like `glass_bottles`, `plastic_bags`, and `wrappers` to identify how many of certain objects were found within the dumpster.
 
+## Answering some questions about this data 
 
+```{r}
+professor_weight_total = 
+  professor_trash_df |>
+    pull(weight_tons) |>
+    sum(na.rm = TRUE)
 
+show(professor_weight_total)
+```
 
+The total weight of trash collected by Professor Trash Wheel was 282.26 tons. 
+
+```{r}
+gwynnda_cigarette_total = 
+  gwynnda_trash_df |>
+    filter (month == "June", year == 2022) |>
+    pull(cigarette_butts) |>
+    sum(na.rm = TRUE)
+
+show(gwynnda_cigarette_total)
+```
+
+The total number of cigarette butts collected by Gwynnda in June 2022 is 18120. 
 
 
