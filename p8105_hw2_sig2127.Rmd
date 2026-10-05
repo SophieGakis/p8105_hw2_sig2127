@@ -127,4 +127,10 @@ transit_tidy_df |>
 
 By removing any duplicate rows so it shows only the number of distinct stations that are identified by name and line in the dataset, and filtering for the stations that serve only the A train, and then from those filtering for the ones where ada compliance is true, I can see that of the stations that serve the A train, 17 are ADA compliant. 
 
+# Problem 2 
+
+## Reading in and cleaning the Mr. Trash Wheel dataset
+
+
+
 
