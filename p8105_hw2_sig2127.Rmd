@@ -131,6 +131,68 @@ By removing any duplicate rows so it shows only the number of distinct stations 
 
 ## Reading in and cleaning the Mr. Trash Wheel dataset
 
+```{r}
+library(readxl)
+```
+
+```{r}
+mr_trash_df = 
+  read_excel("Data/202509 Trash Wheel Collection Data.xlsx", 
+    sheet = "Mr. Trash Wheel", 
+      range = "A2:N709",               
+        na = c("", "NA", ".")
+          ) |>
+  janitor::clean_names() |>
+  mutate(
+    sports_balls = round(sports_balls), 
+    sports_balls = as.integer(sports_balls), 
+    year = as.numeric(year),
+    set_name = "mr_trash"
+  )
+```
+
+## Reading in and cleaning the Professor Trash Wheel and Gwynnda datasets similarly 
+
+```{r}
+professor_trash_df = 
+  read_excel("Data/202509 Trash Wheel Collection Data.xlsx", 
+    sheet = "Professor Trash Wheel", 
+      range = "A2:M134",               
+        na = c("", "NA", ".")
+          ) |>
+  janitor::clean_names() |>
+  mutate(
+    year = as.numeric(year),
+    set_name = "professor_trash" 
+  )
+
+gwynnda_trash_df = 
+  read_excel("Data/202509 Trash Wheel Collection Data.xlsx", 
+    sheet = "Gwynns Falls Trash Wheel", 
+      range = "A2:L351",               
+        na = c("", "NA", ".")
+          ) |>
+  janitor::clean_names() |>
+  mutate(
+    year = as.numeric(year),
+    set_name = "gwynnda_trash" 
+  )
+```
+
+## Combining all three datasets by binding the rows 
+
+```{r}
+trash_combined_df = 
+  bind_rows(mr_trash_df, professor_trash_df, gwynnda_trash_df)
+```
+
+
+## Writing a paragraph and answering a question about this data 
+
+After combining these three datasets, the `trash_combined_df` dataset contains `r nrow(trash_combined_df)` observations and `r ncol(trash_combined_df)` variables. Some important variables within `trash_combined_df` are `dumpster` which gives an ID number for the dumpster being investigated, `month`, `year`, and `date` to identify when the measurements were made, `weight_tons` to describe the weight of the trash from the dumpster measured in tons, and things like `glass_bottles`, `plastic_bags`, and `wrappers` to identify how many of certain objects were found within the dumpster.
+
+
+
 
 
 
