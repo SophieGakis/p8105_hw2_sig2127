@@ -137,15 +137,16 @@ library(readxl)
 
 ```{r}
 mr_trash_df = 
-  read_excel("Data/202509 Trash Wheel Collection Data.xlsx", 
+  read_excel("Data/202610 Trash Wheel Collection Data.xlsx", 
     sheet = "Mr. Trash Wheel", 
-      range = "A2:N709",               
+      range = "A2:N742",               
         na = c("", "NA", ".")
           ) |>
   janitor::clean_names() |>
   mutate(
     sports_balls = round(sports_balls), 
     sports_balls = as.integer(sports_balls), 
+    plastic_bottles = as.numeric(plastic_bottles), 
     year = as.numeric(year),
     set_name = "mr_trash"
   )
@@ -155,26 +156,28 @@ mr_trash_df =
 
 ```{r}
 professor_trash_df = 
-  read_excel("Data/202509 Trash Wheel Collection Data.xlsx", 
+  read_excel("Data/202610 Trash Wheel Collection Data.xlsx", 
     sheet = "Professor Trash Wheel", 
-      range = "A2:M134",               
+      range = "A2:M139",               
         na = c("", "NA", ".")
           ) |>
   janitor::clean_names() |>
   mutate(
     year = as.numeric(year),
+    plastic_bottles = as.numeric(plastic_bottles), 
     set_name = "professor_trash" 
   )
 
 gwynnda_trash_df = 
-  read_excel("Data/202509 Trash Wheel Collection Data.xlsx", 
-    sheet = "Gwynns Falls Trash Wheel", 
-      range = "A2:L351",               
+  read_excel("Data/202610 Trash Wheel Collection Data.xlsx", 
+    sheet = "Gwynnda the Good Wheel of the W", 
+      range = "A2:L394",               
         na = c("", "NA", ".")
           ) |>
   janitor::clean_names() |>
   mutate(
     year = as.numeric(year),
+    plastic_bottles = as.numeric(plastic_bottles),
     set_name = "gwynnda_trash" 
   )
 ```
@@ -202,7 +205,9 @@ professor_weight_total =
 show(professor_weight_total)
 ```
 
-The total weight of trash collected by Professor Trash Wheel was 282.26 tons. 
+The total weight of trash collected by Professor Trash Wheel was 294.96 tons. 
+
+The total weight of trash collected by Professor Trash Wheel was `r round(professor_weight_total, 2)` tons.
 
 ```{r}
 gwynnda_cigarette_total = 
@@ -214,6 +219,8 @@ gwynnda_cigarette_total =
 show(gwynnda_cigarette_total)
 ```
 
-The total number of cigarette butts collected by Gwynnda in June 2022 is 18120. 
+The total number of cigarette butts collected by Gwynnda in June 2022 was 18120. 
+
+The total number of cigarette butts collected by Gwynnda in June 2022 was `r round(gwynnda_cigarette_total, 2)` tons.
 
 
