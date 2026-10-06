@@ -232,7 +232,7 @@ baseline_df =
     slice (-1) |>
     rename(
      Current_Age = age_at_the_study_baseline, 
-     ID = x1 , 
+     Study_ID = x1 , 
      Sex = x1_male_0_female, 
      Education = years_of_education,  
      Apoe4 = x1_apoe4_carrier_0_apoe4_non_carrier, 
@@ -259,7 +259,39 @@ view(baseline_df)
 
 Discuss important steps in the import process and relevant features of the dataset. How many participants were recruited, and of these how many develop MCI? What is the average baseline age? What proportion of women in the study are APOE4 carriers?
 
+## Importing, cleaning, and tidying the dataset of longitudinally observed biomarker values
 
+```{r}
+amyloid_df = 
+  read_csv(
+    file = "Data/mci_amyloid.csv", 
+    na = c(".", "NA", "")) |>
+    janitor::clean_names() |> 
+    slice (-1) |>
+    rename(
+     Study_ID = study_id, 
+     Baseline = time_in_years_elapsed_since_the_study_baseline_to_the_visit_where_biomarker_amyloid_42_40_ratio_was_measured, 
+     Time_2 = na_3,  
+     Time_4 = na_4, 
+     Time_6 = na_5, 
+     Time_8 = na_6
+      )
 
+view(amyloid_df)
+```
+
+Comment on the steps on the import process and the features of the dataset.
+
+## Checking whether some participants appear in only the baseline or amyloid dataset
+
+```{r}
+amyloid_missing = 
+  baseline_df |>
+  filter(Study_ID %in% amyloid_df$Study_ID)
+
+baseline_missing = 
+  amyloid_df |>
+  filter(Study_ID %in% baseline_df$Study_ID)
+```
 
 
