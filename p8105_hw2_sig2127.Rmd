@@ -27,20 +27,15 @@ transit_df =
       "NO" ~ FALSE 
     )
   )
-
-nrow(transit_df)
-ncol(transit_df)
-
-view(transit_df)
 ```
 
 ## Writing a paragraph to describe the data 
 
-The transit_df dataset now contains 19 variables (or columns). It contains subway lines, station names, latitude/longitude values for each station, what routes are served by each station, what entrace type is in the station, if there is vending and entry at the station, and if the station is ADA compliant. 
+The `transit_df` dataset now contains `r ncol(transit_df)` columns. It contains subway lines, station names, latitude/longitude values for each station, what routes are served by each station, what entrace type is in the station, if there is vending and entry at the station, and if the station is ADA compliant. 
 
 So far, after importing this dataset, I cleaned it up by keeping only the variables of interest, and making the entry variable logical (having true/false values), as opposed to character (having yes/no values). 
 
-The current dimensions of the data set are 1868 rows x 19 columns, and I do not believe that these data are tidy. 
+The current dimensions of the data set are `r nrow(transit_df)` rows x `r ncol(transit_df)` columns, and I do not believe that these data are tidy. 
 
 ## Answering some questions about the data 
 
@@ -105,8 +100,6 @@ transit_tidy_df =
     values_to = "route_name",
   ) |>
   drop_na(route_name) 
-
-view(transit_tidy_df)
 ```
 
 ## Answering more questions
@@ -201,8 +194,6 @@ professor_weight_total =
   professor_trash_df |>
     pull(weight_tons) |>
     sum(na.rm = TRUE)
-
-show(professor_weight_total)
 ```
 
 The total weight of trash collected by Professor Trash Wheel was `r round(professor_weight_total, 2)` tons.
@@ -213,8 +204,6 @@ gwynnda_cigarette_total =
     filter (month == "June", year == 2022) |>
     pull(cigarette_butts) |>
     sum(na.rm = TRUE)
-
-show(gwynnda_cigarette_total)
 ```
 
 The total number of cigarette butts collected by Gwynnda in June 2022 was `r round(gwynnda_cigarette_total, 2)` tons.
@@ -252,8 +241,6 @@ baseline_df =
     Current_Age = as.numeric(Current_Age)
   ) |> 
   filter(is.na(Age_At_Onset) | Age_At_Onset > Current_Age)
-
-view(baseline_df)
 ```
 
 ## Answer some questions about this dataset 
@@ -281,14 +268,14 @@ amyloid_df =
      Time_4 = na_4, 
      Time_6 = na_5, 
      Time_8 = na_6
-      )
-
-view(amyloid_df)
+      ) |>
+  pivot_longer(
+    Baseline:Time_8,
+    names_to = "Time of Visit", 
+    values_to = "Years Elapsed Since Baseline")
 ```
 
-Comment on the steps on the import process and the features of the dataset.
-
-As far as the import process went, I first started by importing the CSV file from my data folder, telling R what to recognize as NA values, and cleaning up the given names. Then I looked at the dataset and removed the first row since it was headings and not data. Then I renamed the columns/variables to simpler titles that made more sense to me. 
+As far as the import process went, I first started by importing the CSV file from my data folder, telling R what to recognize as NA values, and cleaning up the given names. Then I looked at the dataset and removed the first row since it was headings and not data. Then I renamed the columns/variables to simpler titles that made more sense to me. Finally, I used `pivot_longer` to fix that the years elapsed between baseline and the visit where the biomarker ratio was measures was spread across five columns, which corresponded to five observation times.
 
 Some features of this dataset that I find interesting are all of the measures of the time in years that has elapsed from the study baseline to the visit where the biomarker ratio was measured. There are 5 measurements for this, baseline, time 2, time 4, time 6, and time 8. 
 
