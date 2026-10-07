@@ -206,7 +206,7 @@ gwynnda_cigarette_total =
     sum(na.rm = TRUE)
 ```
 
-The total number of cigarette butts collected by Gwynnda in June 2022 was `r round(gwynnda_cigarette_total, 2)` tons.
+The total number of cigarette butts collected by Gwynnda in June 2022 was `r (gwynnda_cigarette_total)`. 
 
 # Problem 3 
 
@@ -238,7 +238,8 @@ baseline_df =
       "1" ~ "Apoe4 Carrier", 
       "0" ~ "Apoe4 Non-Carrier"
     ),
-    Current_Age = as.numeric(Current_Age)
+    Current_Age = as.numeric(Current_Age), 
+    Age_At_Onset = as.numeric(Age_At_Onset)
   ) |> 
   filter(is.na(Age_At_Onset) | Age_At_Onset > Current_Age)
 ```
@@ -272,7 +273,7 @@ amyloid_df =
   pivot_longer(
     Baseline:Time_8,
     names_to = "Time of Visit", 
-    values_to = "Years Elapsed Since Baseline")
+    values_to = "Years Elapsed")
 ```
 
 As far as the import process went, I first started by importing the CSV file from my data folder, telling R what to recognize as NA values, and cleaning up the given names. Then I looked at the dataset and removed the first row since it was headings and not data. Then I renamed the columns/variables to simpler titles that made more sense to me. Finally, I used `pivot_longer` to fix that the years elapsed between baseline and the visit where the biomarker ratio was measures was spread across five columns, which corresponded to five observation times.
@@ -287,7 +288,7 @@ filter(baseline_df, !Study_ID %in% amyloid_df$Study_ID)
 filter(amyloid_df, !Study_ID %in% baseline_df$Study_ID)
 ```
 
-The first filtration is looking for study ID's that only appear in the baseline dataset and not in the amyloid dataset. It looks like there are 16 of these. The second filtration is looking for study ID's that only appear in the amyloid dataset and not in the baseline dataset. It looks like there are 8 of these. 
+The first filtration is looking for study ID's that only appear in the baseline dataset and not in the amyloid dataset. It looks like there are 8 of these. The second filtration is looking for study ID's that only appear in the amyloid dataset and not in the baseline dataset. It looks like there are 80 of these. 
 
 ## Combining both datasets so that only participants who appear in both datasets are retained
 
@@ -295,7 +296,7 @@ The first filtration is looking for study ID's that only appear in the baseline 
 combo_df = inner_join(baseline_df, amyloid_df, by = "Study_ID")
 ```
 
-After combining these two datasets, the `combo_df` dataset contains `r nrow(combo_df)` observations and `r ncol(combo_df)` variables. This means that `r nrow(combo_df)` participants had data collected that appeared in both data sets. 
+After combining these two datasets, the `combo_df` dataset contains `r nrow(combo_df)` observations and `r ncol(combo_df)` variables. This means that `r n_distinct(combo_df$Study_ID)` participants had data collected that appeared in both data sets. 
 
 ## Exporting the result as a CSV to my data directory
 

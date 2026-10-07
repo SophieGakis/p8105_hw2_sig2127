@@ -1,4 +1,4 @@
-Study_ID,Current_Age,Sex,Education,Apoe4,Age_At_Onset,Time of Visit,Years Elapsed Since Baseline
+Study_ID,Current_Age,Sex,Education,Apoe4,Age_At_Onset,Time of Visit,Years Elapsed
 1,63.1,Female,16,Apoe4 Carrier,NA,Baseline,0.1105487
 1,63.1,Female,16,Apoe4 Carrier,NA,Time_2,NA
 1,63.1,Female,16,Apoe4 Carrier,NA,Time_4,0.109325197
